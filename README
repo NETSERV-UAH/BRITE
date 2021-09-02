@@ -1,0 +1,125 @@
+==============================================================================
+ BRITE: Boston University Representative Internet Topology Generator
+
+    Alberto Medina, Anukool Lakhina, Ibrahim Matta, John Byers
+     Department of Computer Science, Boston University
+
+ 
+Copyright (c) 2002 QoS Networking Laboratory (QNL), Boston University.  All 
+rights reserved.  Permission to use, copy, modify, and distribute this
+software and its documentation for any purpose and without fee is hereby
+granted, provided that the above copyright notice appear in all copies and 
+that both the copyright notice and this permission notice appear in
+supporting documentation.  The QoS Networking Laboratory (QNL) of the 
+Computer Science Department at Boston University makes no representations
+about the suitability of this software for any purpose.  It is provided "as 
+is" without express or implied warranty.
+
+==============================================================================
+
+1. Instalación
+--------------
+Descomprime la carpeta zip o como lo hayas descargado y entras en la carpeta
+
+$ make
+ Ya está todo instalado
+
+2.  Contenido:
+-------------------------
+
+This version of BRITE has:
+
+ + ~/BRITE/
+    - GUI/		#The GUI source files
+    - C++/		#The C++ source files (also brite executable)	
+    - Java/		#The Java source (and class) files
+    - Makefile		#The main Makefile		
+    - brite		#A helper shell script to launch BRITE (gui)
+    - bin/
+		- scan2brite	 #Converts SCAN format files to BRITE
+		- skitter2brite  #Converts SKITTER (artsdump) files to BRITE
+		- cppgen	 #Command-Line access to C++ Generation Engine
+		- javagen	 #Command-Line access to Java Generation Engine
+		- brite2otter	 #Export BRITE topology for visualization in Otter
+		- brite2ssf	 #Export BRITE topology for simulation in SSFNet
+		- brite2jsim	 #Export BRITE topology for simulation in Javasim
+		- brite2ns 	 #Export BRITE topology for simulation in NS
+		- brite2ns.tcl	 #Tcl script to convert BRITE to NS (Thanks to Stan Rost)
+		- brite2ns.py	 #Python script to convert BRITE to NS (Thanks to Andre Detsch)
+
+3. Ejecución:
+-------------
+
+Puedes ejecutar la interfaz gráfica de BRITE con: $./britegui &
+
+Otra opción es hacerlo por línea de comandos:
+Podemos hacer: $bin/brite <archivo de configuración de entrada> <archivo brite de salida> <seed_file>
+			   $C++/cppgen <archivo de configuración de entrada> <archivo brite de salida> <seed_file>
+Es lo mismo
+
+---------IMPORTANTE--------
+La salida de la interfaz gráfica de BRITE y la salida ejecutando BRITE desde linea de comandos no es la misma
+Difieren en una línea, que para el proyecto den2ne luego produce un error en el metodo load_BRITE de graph/graph.py
+Por eso para este uso se recomienda hacerlo por linea de comando ya que es como voy a dejar el metodo load_BRITE de graph/graph.py para que no de error
+---------------------------
+
+
+4. Archivo de configuración de entrada:
+----------------------------------------
+BriteConfig
+
+BeginModel
+	Name = 3 			#Modelo de la topología(Explicado debajo) 
+	N = 10				#Numero de nodos de la topología
+	HS = 1000			#
+	LS = 100			#Estos dos determinan el tamaño del plano, yo no lo he cambiado
+	NodePlacement = 1	#Como se ponen los nodos: Random (De forma totalmente aleatoria) = 1, Heavy Teiled(Se agrupan en distintos grupos con mayor densidad) = 2
+	GrowthType = 1		#Como crece la topología: Incremental = 1, All = 2. No he encontrado una bibliografía que lo explique bien, yo siempre lo he dejado en 1
+	m = 2				#Número de enlaces por nodo. Si m = 2 y tenemos 10 nodos pues tendremos 20 enlaces y cada nodo estará conectado a 2 enlaces mínimo. 
+	alpha = 0.15		#Parámetros especificos del uso de modelos Waxman
+	beta = 0.2			#Parámetros especificos del uso de modelos Waxman
+	BWDist = 1			#Configuración del ancho de banda, no lo he usado para nada. Constant = 1, Uniform =2, HeavyTailed = 3, Exponential =4
+	BWMin = 10.0
+	BWMax = 1024.0
+EndModel
+
+
+
+BeginOutput				#Formato de la salida. Al menos una debe tener un 1
+	BRITE = 1			#Formato .brite, el que he usado. 0 = No guardar como BRITE, 1 = Guardar como BRITE
+	OTTER = 0			#Igual que brite el resto, si es 0 no se guarda en ese formato
+	DML = 0				#si es 1 se guarda en ese formato
+	NS = 0
+	Javasim = 0
+EndOutput
+-----------------------------------------
+
++ Modelo de la topología:
+	Puede ser:
+		-Router Waxman = 1
+		-AS Waxman = 3
+		-Router Barbasi = 2
+		-AS Barbasi = 4
+		-Top Down = 5 (Necesita un archivo brite previo, no usado)
+		-Bottom Up = 6 (Necesita un archivo brite previo, no usado)
+		-Router FIle = 7 (Necesita un archivo brite previo, no usado)
+		-AS File = 8 (Necesita un archivo brite previo, no usado)
+	Indican el modelo de como se genera la topología (Más información en la bibliografía)
+
++ Número de enlaces por nodo: 
+	Solo un aviso, las topologías con muchos nodos y con m < 1 demoran mucho el algoritmo den2ne
+	por lo que aconsejo usar solo m = 1
+
+Generador_brite.py:
+-------------------
+Como se necesita crear un archivo inicial con la configuración de la topología he creado un programa que los crea automaticamente
+Este recibe por linea de comandos los siguientes parámetros:
+	+Nombre del archivo de configuración que vamos a generar
+	+Modelo de la topología (Solo da soporte a los modelos RTWaxman = 1, ASWaxman = 3, RTBarbasi = 2 y ASBarbasi)
+	+NodePlacement
+	+GrowthTYpe (solo para Waxman)
+	+Numero de enlaces por nodo (m)
+	+Alpha (para Waxman)
+	+Beta (para Waxman)
+
+>Como seed_file usar el que viene ya
