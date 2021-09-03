@@ -116,6 +116,7 @@ Como se necesita crear un archivo inicial con la configuración de la topología
 Este recibe por linea de comandos los siguientes parámetros:
 	+Nombre del archivo de configuración que vamos a generar
 	+Modelo de la topología (Solo da soporte a los modelos RTWaxman = 1, ASWaxman = 3, RTBarbasi = 2 y ASBarbasi)
+	+Numero de nodos 
 	+NodePlacement
 	+GrowthTYpe (solo para Waxman)
 	+Numero de enlaces por nodo (m)
