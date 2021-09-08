@@ -1,2 +1,0 @@
-# BRITE
-BRITE
