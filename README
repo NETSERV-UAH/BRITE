@@ -114,7 +114,7 @@ EndOutput
 
 +HS y LS (Dimensiones del plano):
 	HS: Longitud del plano cuadrado donde se encuentra la topología
-	LS: 
+	LS: Tamaño de los cuadros interiores
 
 +Node Placement:
 	Como se posicionan los nodos en el plano. Dos opciones:
