@@ -23,6 +23,7 @@ Descomprime la carpeta zip o como lo hayas descargado y entras en la carpeta
 
 $ make
  Ya está todo instalado
+ SI da error al hacer el make porque falta el paquete javac poner: $ apt install openjdk-11-jre-headless
 
 2.  Contenido:
 -------------------------
@@ -75,7 +76,7 @@ BeginModel
 	LS = 100			#Estos dos determinan el tamaño del plano, yo no lo he cambiado
 	NodePlacement = 1	#Como se ponen los nodos: Random (De forma totalmente aleatoria) = 1, Heavy Teiled(Se agrupan en distintos grupos con mayor densidad) = 2
 	GrowthType = 1		#Como crece la topología: Incremental = 1, All = 2. No he encontrado una bibliografía que lo explique bien, yo siempre lo he dejado en 1
-	m = 2				#Número de enlaces por nodo. Si m = 2 y tenemos 10 nodos pues tendremos 20 enlaces y cada nodo estará conectado a 2 enlaces mínimo. 
+	m = 2				#Número de enlaces por cada nuevo nodo. Si m = 2 y tenemos 10 nodos pues tendremos 20 enlaces y cada nodo estará conectado a 2 enlaces mínimo. 
 	alpha = 0.15		#Parámetros especificos del uso de modelos Waxman
 	beta = 0.2			#Parámetros especificos del uso de modelos Waxman
 	BWDist = 1			#Configuración del ancho de banda, no lo he usado para nada. Constant = 1, Uniform =2, HeavyTailed = 3, Exponential =4
@@ -94,10 +95,12 @@ BeginOutput				#Formato de la salida. Al menos una debe tener un 1
 EndOutput
 -----------------------------------------
 
-+ Modelo de la topología:
+5. Explicación de los parámetros de entrada:
+---------------------------------------------
++ Modelo de la topología (Name):
 	Puede ser:
-		-Router Waxman = 1
-		-AS Waxman = 3
+		-Router Waxman = 1 (Modelo usado para la generación de todos los .brite por el momento)
+		-AS Waxman = 3 
 		-Router Barbasi = 2
 		-AS Barbasi = 4
 		-Top Down = 5 (Necesita un archivo brite previo, no usado)
@@ -106,12 +109,38 @@ EndOutput
 		-AS File = 8 (Necesita un archivo brite previo, no usado)
 	Indican el modelo de como se genera la topología (Más información en la bibliografía)
 
-+ Número de enlaces por nodo: 
-	Solo un aviso, las topologías con muchos nodos y con m < 1 demoran mucho el algoritmo den2ne
-	por lo que aconsejo usar solo m = 1
++Número de nodos de la topología (N):
+	Su valor debe ser un entero entre: 1<= N <= HS * HS
 
-Generador_brite.py:
--------------------
++HS y LS (Dimensiones del plano):
+	HS: Longitud del plano cuadrado donde se encuentra la topología
+	LS: 
+
++Node Placement:
+	Como se posicionan los nodos en el plano. Dos opciones:
+	-Random (1): Se colocan en el plano de forma totalmente aleatoria
+	-Heavy Tailed (2): Se colocan por zonas con mayor concentración de nodos
+
++Growth Type:
+	Como los nodos se introducen en la topología. 
+	-Incremental (1): Posiciona los nodos uno a uno a medida que se unen a la topología.
+		En este punto solo se seleccionan como nodos de elección aquellos que ya se han incluido en la topología
+	-Random (2): posiciona todos los nodos a la vez antes de añadir los enlaces. 
+		En este punto, un nodo es aleatoriamente seleccionado y m enlaces son usados para conectarlo con m vecinos candidatos del total de nodos
+
++ Número de enlaces por nuevo nodo (m): 
+	Numero de nodos vecinos a los que un nuevo nodo se conecta cuando se une a la red. 
+	En otras palabras, el numero de nuevos enlaces que se añaden a la topología.
+	Cuanto mayor es el valor de m. más densa es la topología generada.	
+
++Alpha y Beta: Parámetros específicos del modelo Waxman. Por ahora los dejo fijos a:
+	Alpha = 0.15, Beta = 0.2
+
++BWDist, BWMin, BWMax: Parámetros relacionados con el ancho de banda de los enlaces.
+	Para la generación de las topologías no se han tenido en cuenta.
+
+6. Generador_brite.py:
+-----------------------
 Como se necesita crear un archivo inicial con la configuración de la topología he creado un programa que los crea automaticamente
 Este recibe por linea de comandos los siguientes parámetros:
 	+Nombre del archivo de configuración que vamos a generar
@@ -124,3 +153,16 @@ Este recibe por linea de comandos los siguientes parámetros:
 	+Beta (para Waxman)
 
 >Como seed_file usar el que viene ya
+
+7. Autogenerador.sh
+--------------------
+Para automatizar la generación de los archivos de configuración y los archivos brite propiamente dichos, se ha creado un script "autogenerador.sh"
+En este script podemos ver que los parametros de entrada que hemos explicado en este documento están declarados al principio con los valores que pueden tomar para crear la topología que deseamos.
+Después ejecutamos el generador_brite.py con los parámetros de entrada correspondientes.
+Y por último, para cada archivo de configuración creado (determina una configuración de topologias brite), creamos 10 escenarios brite que siendo iguales en parámetros brite(numero de nodos, m, nodePlcement...) son escenarios distintos por el donde están posicionados cada nodo, o las conexiones entre nodos.
+
+8. Bibliografía
+-----------------
+-Repositorio donde encontrarlo: https://github.com/NETSERV-UAH/BRITE
+-A. Medina, I. Matta, and J. Byers. On the Origin of Power-laws in Internet Topologies. ACM Computer Communication Review, pages 160–163, April 2000.
+-Medina, Alberto & Lakhina, Anukool & Matta, Ibrahim & Byers, John. (2001). BRITE: Universal Topology Generation from a User's Perspective. 
