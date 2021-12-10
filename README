@@ -48,6 +48,17 @@ This version of BRITE has:
 		- brite2ns.tcl	 #Tcl script to convert BRITE to NS (Thanks to Stan Rost)
 		- brite2ns.py	 #Python script to convert BRITE to NS (Thanks to Andre Detsch)
 
+ + Este repositorio además incluye los siguientes archivos:
+ 
+ + Archivos_brite		#Carpeta con las topologías generadas, clasificadas según un sistema de archivos explicado en InformeBRITE.pdf
+ + Archivos_conf_Barabasi	#Carpeta con los archivos de configuración de las topologías Barabasi
+ + Archivos_conf_Waxman		#Carpeta con los archivos de configuración de las topologías Waxman
+ + autogenerador.sh		#Script que automatiza la generación de las topologías
+ + Carpeta_seeds		#Carpeta con las semillas utilizadas en la ejecución de BRITE
+ + Carpeta_seeds_backup		#Carpeta con una copia de las semillas utilizadas en la ejecución de BRITE. Leer el informe de BRITE para más información
+ + generador_brite.py		#Programa en python que genera los archivos de configuración de las topologías BRITE
+ + parser.py			#Programa que pasa la salida .brite a dos archivos Nodos.txt y Enlaces.txt. Leer el informe de BRITE para más información
+ + InformeBRITE.pdf		#Informe detallado de BRITE en formato pdf
 3. Ejecución:
 -------------
 
@@ -60,8 +71,8 @@ Es lo mismo
 
 ---------IMPORTANTE--------
 La salida de la interfaz gráfica de BRITE y la salida ejecutando BRITE desde linea de comandos no es la misma
-Difieren en una línea, que para el proyecto den2ne luego produce un error en el metodo load_BRITE de graph/graph.py
-Por eso para este uso se recomienda hacerlo por linea de comando ya que es como voy a dejar el metodo load_BRITE de graph/graph.py para que no de error
+Difieren en una línea, que produce un error en la ejecucion de parser.py
+Por eso para este uso se recomienda hacerlo por linea de comando para una ejecución libre de errores
 ---------------------------
 
 
@@ -77,8 +88,8 @@ BeginModel
 	NodePlacement = 1	#Como se ponen los nodos: Random (De forma totalmente aleatoria) = 1, Heavy Teiled(Se agrupan en distintos grupos con mayor densidad) = 2
 	GrowthType = 1		#Como crece la topología: Incremental = 1, All = 2. No he encontrado una bibliografía que lo explique bien, yo siempre lo he dejado en 1
 	m = 2				#Número de enlaces por cada nuevo nodo. Si m = 2 y tenemos 10 nodos pues tendremos 20 enlaces y cada nodo estará conectado a 2 enlaces mínimo. 
-	alpha = 0.15		#Parámetros especificos del uso de modelos Waxman
-	beta = 0.2			#Parámetros especificos del uso de modelos Waxman
+	alpha = 0.2		#Parámetros especificos del uso de modelos Waxman
+	beta = 0.15			#Parámetros especificos del uso de modelos Waxman
 	BWDist = 1			#Configuración del ancho de banda, no lo he usado para nada. Constant = 1, Uniform =2, HeavyTailed = 3, Exponential =4
 	BWMin = 10.0
 	BWMax = 1024.0
@@ -99,14 +110,14 @@ EndOutput
 ---------------------------------------------
 + Modelo de la topología (Name):
 	Puede ser:
-		-Router Waxman = 1 (Modelo usado para la generación de todos los .brite por el momento)
+		-Router Waxman = 1 
 		-AS Waxman = 3 
 		-Router Barbasi = 2
 		-AS Barbasi = 4
-		-Top Down = 5 (Necesita un archivo brite previo, no usado)
-		-Bottom Up = 6 (Necesita un archivo brite previo, no usado)
-		-Router FIle = 7 (Necesita un archivo brite previo, no usado)
-		-AS File = 8 (Necesita un archivo brite previo, no usado)
+		-Top Down = 5 
+		-Bottom Up = 6 
+		-Router FIle = 7 
+		-AS File = 8 
 	Indican el modelo de como se genera la topología (Más información en la bibliografía)
 
 +Número de nodos de la topología (N):
@@ -134,7 +145,7 @@ EndOutput
 	Cuanto mayor es el valor de m. más densa es la topología generada.	
 
 +Alpha y Beta: Parámetros específicos del modelo Waxman. Por ahora los dejo fijos a:
-	Alpha = 0.15, Beta = 0.2
+	Alpha = 0.2, Beta = 0.15
 
 +BWDist, BWMin, BWMax: Parámetros relacionados con el ancho de banda de los enlaces.
 	Para la generación de las topologías no se han tenido en cuenta.
@@ -152,7 +163,6 @@ Este recibe por linea de comandos los siguientes parámetros:
 	+Alpha (para Waxman)
 	+Beta (para Waxman)
 
->Como seed_file usar el que viene ya
 
 7. Autogenerador.sh
 --------------------
@@ -161,8 +171,20 @@ En este script podemos ver que los parametros de entrada que hemos explicado en 
 Después ejecutamos el generador_brite.py con los parámetros de entrada correspondientes.
 Y por último, para cada archivo de configuración creado (determina una configuración de topologias brite), creamos 10 escenarios brite que siendo iguales en parámetros brite(numero de nodos, m, nodePlcement...) son escenarios distintos por el donde están posicionados cada nodo, o las conexiones entre nodos.
 
-8. Bibliografía
+
+8.Carpetas de las semillas
+---------------------------
+Las carpetas con las semillas utilizadas para la ejecución de BRITE son:
+	+ Carpeta_seeds/	Esta carpeta tiene las semillas que introducimos a BRITE. 
+				Como BRITE modifica la semilla trás la ejecución, tras la ejecución de BRITE estas semillas no son válidas.
+	+Carpeta_seeds_backup/	Esta carpeta tiene una copia de las semillas introducidas en BRITE.
+				IMPORTANTE: No borrar nunca esta carpeta, ni usar estas semillas directamente en la ejecuión de BRITE, pues se perderian las semillas válidas.
+				Lo qe hacemos para usar las semillas válidas en BRITE, antes de cada ejecución de BRITE, copiamos las semillas de esta carpeta en la carpeta Carpeta_seeds/
+
+
+9. Bibliografía
 -----------------
 -Repositorio donde encontrarlo: https://github.com/NETSERV-UAH/BRITE
 -A. Medina, I. Matta, and J. Byers. On the Origin of Power-laws in Internet Topologies. ACM Computer Communication Review, pages 160–163, April 2000.
 -Medina, Alberto & Lakhina, Anukool & Matta, Ibrahim & Byers, John. (2001). BRITE: Universal Topology Generation from a User's Perspective. 
+-Zegura, Ellen & Calvert, Kenneth & Bhattacharjee, Sharmila. (2002). How to Model an Internetwork. Proceedings - IEEE INFOCOM. 2. 
