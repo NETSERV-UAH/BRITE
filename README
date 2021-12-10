@@ -23,7 +23,7 @@ Descomprime la carpeta zip o como lo hayas descargado y entras en la carpeta
 
 $ make
  Ya está todo instalado
- SI da error al hacer el make porque falta el paquete javac poner: $ sudo apt install openjdk-11-jre-headless
+ SI da error al hacer el make porque falta el paquete javac poner: $ sudo apt install openjdk-11-jdk
 
 2.  Contenido:
 -------------------------
