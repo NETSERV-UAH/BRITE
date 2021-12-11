@@ -2,6 +2,9 @@
 import sys
 
 def parseador(path):
+    """
+        Función que transforma la salida de BRITE en dos archivos, Nodos.txt y Enlaces.txt para ser más legible
+    """
     split_path = path.split('/')
     num_linea = 0 #La vamos incrementando a cada linea que leemos. Me sirve para ir viendo en que linea del archivo me encuentro
     Carpeta_brite = split_path[0]
@@ -33,13 +36,13 @@ def parseador(path):
     archivo_nodos = Carpeta_brite +'/'+ modelo  +'/'+ n_nodos +'/'+ grado +'/'+ semilla +'/'+'Nodos.txt'
     with open(archivo_nodos, 'w') as file:
         for info_nodos in lista_nodos:
-            file.write(info_nodos["ID"]+';'+info_nodos["x_pos"]+';'+info_nodos["y_pos"]+'\n') #Pregunta: ¿pongo un ; al final de cada linea?
+            file.write(info_nodos["ID"]+';'+info_nodos["x_pos"]+';'+info_nodos["y_pos"]+'\n') 
 
     #Crear archivo enlaces
     archivo_enlaces = Carpeta_brite +'/'+ modelo  +'/'+ n_nodos +'/'+ grado +'/'+ semilla +'/'+'Enlaces.txt'
     with open(archivo_enlaces, 'w') as file:
         for info_enlaces in lista_enlaces:
-            file.write(info_enlaces["from"]+';'+info_enlaces["to"]+';'+info_enlaces["distancia"]+'\n') #Pregunta: ¿pongo un ; al final de cada linea?
+            file.write(info_enlaces["from"]+';'+info_enlaces["to"]+';'+info_enlaces["distancia"]+'\n')
 
 if __name__ == "__main__":
     parseador(sys.argv[1])
