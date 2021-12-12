@@ -29,7 +29,7 @@ def parseador(path):
                 info_enlaces = dict()
                 info_enlaces["from"] = datos_lectura.split()[1]
                 info_enlaces["to"] = datos_lectura.split()[2]
-                info_enlaces["distancia"] = datos_lectura.split()[3]
+                info_enlaces["distancia"] = datos_lectura.split()[3].split('.')[0]
                 lista_enlaces.append(info_enlaces)
             num_linea +=1
     #Crear archivo nodos
