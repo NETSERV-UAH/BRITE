@@ -59,6 +59,7 @@ This version of BRITE has:
  + generador_brite.py		#Programa en python que genera los archivos de configuración de las topologías BRITE
  + parser.py			#Programa que pasa la salida .brite a dos archivos Nodos.txt y Enlaces.txt. Leer el informe de BRITE para más información
  + InformeBRITE.pdf		#Informe detallado de BRITE en formato pdf
+ + graficar_topos   #Carpeta con el script de matlab para graficar una topología
 3. Ejecución:
 -------------
 
@@ -181,8 +182,13 @@ Las carpetas con las semillas utilizadas para la ejecución de BRITE son:
 			IMPORTANTE: No borrar nunca esta carpeta, ni usar estas semillas directamente en la ejecuión de BRITE, pues se perderian las semillas válidas.
 			Lo qe hacemos para usar las semillas válidas en BRITE, antes de cada ejecución de BRITE, copiamos las semillas de esta carpeta en la carpeta Carpeta_seeds/
 
+9. Graficar topologias
+-----------------------
+Se ha introducido una carpeta graficar_topos, donde se incluye un script graficar.m que permite graficar las topologías en Matlab para poder visualizarlas.
 
-9. Bibliografía
+Para poder graficar una topología se deben copiar los archivos Nodos.csv y Enlaces.csv de la topología que quieres visualizar y ejecutarlo en Matlab
+
+10. Bibliografía
 -----------------
 -Repositorio donde encontrarlo: https://github.com/NETSERV-UAH/BRITE
 -A. Medina, I. Matta, and J. Byers. On the Origin of Power-laws in Internet Topologies. ACM Computer Communication Review, pages 160–163, April 2000.
