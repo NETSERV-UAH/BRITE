@@ -35,21 +35,21 @@ do
 
 		for ((semilla=1; semilla<=10; semilla++))
 		do	
-			mkdir -p Archivos_brite/Waxman/${num_nodos}/${grado}/${semilla} 
-			mkdir -p Archivos_brite/Barabasi/${num_nodos}/${grado}/${semilla}
+			mkdir -p topos/barabasi-${num_nodos}-${grado}/seed_${semilla} 
+			mkdir -p topos/waxman-${num_nodos}-${grado}/seed_${semilla}
 			
 			#genenar brite para waxman
-			bin/brite Archivos_conf_Waxman/archivoconf${num_nodos}x${conectividad}.conf Archivos_brite/Waxman/${num_nodos}/${grado}/${semilla}/archivobrite Carpeta_seeds/seed${semilla}
+			bin/brite Archivos_conf_Waxman/archivoconf${num_nodos}x${conectividad}.conf topos/waxman-${num_nodos}-${grado}/seed_${semilla}/archivobrite Carpeta_seeds/seed${semilla}
 			#Guardamos en el formato que queremos
-			python3 parser.py Archivos_brite/Waxman/${num_nodos}/${grado}/${semilla}/archivobrite.brite
+			python3 parser.py topos/waxman-${num_nodos}-${grado}/seed_${semilla}/archivobrite.brite
 
 			#utlizar mismo seed
 			cp Carpeta_seeds_backup/* Carpeta_seeds
 
 			#generar brite para barabasi
-			bin/brite Archivos_conf_Barabasi/archivoconf${num_nodos}x${conectividad}.conf Archivos_brite/Barabasi/${num_nodos}/${grado}/${semilla}/archivobrite  Carpeta_seeds/seed${semilla}
+			bin/brite Archivos_conf_Barabasi/archivoconf${num_nodos}x${conectividad}.conf topos/barabasi-${num_nodos}-${grado}/seed_${semilla}/archivobrite  Carpeta_seeds/seed${semilla}
 			#Guardamos en el formato que queremos
-			python3 parser.py Archivos_brite/Barabasi/${num_nodos}/${grado}/${semilla}/archivobrite.brite
+			python3 parser.py topos/barabasi-${num_nodos}-${grado}/seed_${semilla}/archivobrite.brite
 		done
 	done
 done

@@ -9,9 +9,9 @@ def parseador(path):
     num_linea = 0 #La vamos incrementando a cada linea que leemos. Me sirve para ir viendo en que linea del archivo me encuentro
     Carpeta_brite = split_path[0]
     modelo = split_path[1]
-    n_nodos = split_path[2]
-    grado = split_path[3]
-    semilla = split_path[4]
+    n_nodos = split_path[1].split('-')[1]
+    semilla = split_path[2]
+
     linea_primer_nodo = 4 #Linea con la información del primer nodo 
     linea_ultimo_nodo = linea_primer_nodo + int(n_nodos) -1 #Linea con la información del último nodo
     linea_primer_edge = linea_ultimo_nodo + 3 #Linea con la información del primer enlace
@@ -33,13 +33,13 @@ def parseador(path):
                 lista_enlaces.append(info_enlaces)
             num_linea +=1
     #Crear archivo nodos
-    archivo_nodos = Carpeta_brite +'/'+ modelo  +'/'+ n_nodos +'/'+ grado +'/'+ semilla +'/'+'Nodos.txt'
+    archivo_nodos = Carpeta_brite +'/'+ modelo  +'/'+ semilla +'/'+'Nodos.csv'
     with open(archivo_nodos, 'w') as file:
         for info_nodos in lista_nodos:
             file.write(info_nodos["ID"]+';'+info_nodos["x_pos"]+';'+info_nodos["y_pos"]+'\n') 
 
     #Crear archivo enlaces
-    archivo_enlaces = Carpeta_brite +'/'+ modelo  +'/'+ n_nodos +'/'+ grado +'/'+ semilla +'/'+'Enlaces.txt'
+    archivo_enlaces = Carpeta_brite +'/'+ modelo  +'/'+ semilla +'/'+'Enlaces.csv'
     with open(archivo_enlaces, 'w') as file:
         for info_enlaces in lista_enlaces:
             file.write(info_enlaces["from"]+';'+info_enlaces["to"]+';'+info_enlaces["distancia"]+'\n')
