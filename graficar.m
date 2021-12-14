@@ -1,6 +1,6 @@
 %extraer datos de los nodos y enlaces
-nodes = importdata('Nodos.txt');
-edges = importdata("Enlaces.txt");
+nodes = importdata('Nodos.csv');
+edges = importdata("Enlaces.csv");
 
 %posicion nodos
 posX_nodes = nodes(:,2)';
