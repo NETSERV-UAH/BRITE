@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 import sys
 
-def parseador(path):
+def parseador(path, dir_topos=None):
     """
         Función que transforma la salida de BRITE en dos archivos, Nodos.txt y Enlaces.txt para ser más legible
     """
     split_path = path.split('/')
     num_linea = 0 #La vamos incrementando a cada linea que leemos. Me sirve para ir viendo en que linea del archivo me encuentro
-    Carpeta_brite = split_path[0]
-    modelo = split_path[1]
-    n_nodos = split_path[1].split('-')[1]
-    semilla = split_path[2]
+    Carpeta_brite = dir_topos
+    modelo = split_path[-3]
+    n_nodos = split_path[-3].split('-')[1]
+    semilla = split_path[-2]
 
     linea_primer_nodo = 4 #Linea con la información del primer nodo 
     linea_ultimo_nodo = linea_primer_nodo + int(n_nodos) -1 #Linea con la información del último nodo
@@ -45,4 +45,4 @@ def parseador(path):
             file.write(info_enlaces["from"]+';'+info_enlaces["to"]+';'+info_enlaces["distancia"]+'\n')
 
 if __name__ == "__main__":
-    parseador(sys.argv[1])
+    parseador(sys.argv[1], sys.argv[2])
